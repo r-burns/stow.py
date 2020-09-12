@@ -1,4 +1,25 @@
 #!/usr/bin/env python
+"""
+Copyright (C) 1993, 1994, 1995, 1996 by Bob Glickstein
+Copyright (C) 2000, 2001 Guillaume Morin
+Copyright (C) 2007 Kahlil Hodgson
+Copyright (C) 2011 Adam Spiers
+Copyright (C) 2020 Ryan Burns
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 
 from __future__ import print_function
 from collections import namedtuple
