@@ -1,0 +1,8 @@
+{
+    "file": "foo",
+    "stow": {
+        "pkg": {
+            "file": "bar"
+        }
+    }
+}
