@@ -300,9 +300,7 @@ class Stow:
 
     def conflict(self, action, package, message):
         debug(2, "CONFLICT when {}ing {}: {}".format(action, package, message))
-        if not self.conflicts[action][package]:
-            self.conflicts[action][package] = []
-        self.conflicts[action][package].append(message)
+        self.conflicts[action].setdefault(package, []).append(message)
         self.conflict_count += 1
         raise RuntimeError(message)
 

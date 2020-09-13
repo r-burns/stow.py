@@ -22,7 +22,7 @@ def fstree(root):
             curr = results
             for p in dir.split(os.sep):
                 if p != ".":
-                    curr = curr.setdefault(p, {})
+                    curr.setdefault(p, {})
             # add entries for each file
             for f in files:
                 with cd(dir):
