@@ -5,6 +5,7 @@ This script is also set up for use as a CLI script to simplify creating
 new test case json files; see the argparse usage help for more info.
 """
 
+from __future__ import print_function
 from stow import cd
 import json, os
 
@@ -35,23 +36,23 @@ def fstree(root):
         return results
 
 
-def mktree_here(dict):
-    for path in dict:
-        contents = dict[path]
-        if type(contents) is str:
+def mktree_here(tree):
+    for path in tree:
+        contents = tree[path]
+        if type(contents) is dict:
+            os.mkdir(path)
+            with cd(path):
+                mktree_here(contents)
+        else:
             if contents.startswith("->"):
                 os.symlink(contents[len(linkmark) :], path)
             else:
                 with open(path, "w") as f:
                     f.write(contents)
-        else:
-            os.mkdir(path)
-            with cd(path):
-                mktree_here(contents)
 
 
 def mktree(dict, dir="."):
-    os.makedirs(dir, exist_ok="True")
+    os.makedirs(dir)
     with cd(dir):
         mktree_here(dict)
 
