@@ -19,7 +19,8 @@ def cleanup():
 
 cleanup()
 
-gnustow = lambda args: subprocess.check_call(["stow", vflag] + args.split())
+plstow_exe = os.environ.get("GNU_STOW", "stow")
+plstow = lambda args: subprocess.check_call([plstow_exe, vflag] + args.split())
 pystow = lambda args: stow.run_with_args([vflag] + args.split())
 
 
@@ -51,7 +52,7 @@ def compareTest(name, file, args, stowdir="stow"):
         def test(self):
             for argset in args:
                 # Run each program in its own subdir
-                for prog, subdir in ((gnustow, asub), (pystow, bsub)):
+                for prog, subdir in ((plstow, asub), (pystow, bsub)):
                     with stow.cd(subdir):
                         prog(argset)
                 # Compare results using recursive diff
