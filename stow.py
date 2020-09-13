@@ -641,8 +641,8 @@ class Stow:
                 return False
         elif laction == "create":
             if daction == "remove":
-                # Assume we're unfolding the path, and that the link
-                # removal action is earlier than the dir creation action
+                # Assume we're unfolding the path, and that the dir
+                # removal action is earlier than the link creation action
                 # in the task queue.  FIXME: is this a safe assumption?
                 return True
             elif daction == "create":
@@ -879,9 +879,8 @@ class Stow:
     def fold_tree(self, target, source):
         debug(3, "--- Folding tree: " + target + " => " + source)
         for node in os.listdir(target):
-            if not self.is_a_node(join_paths(target, node)):
-                continue
-            self.do_unlink(join_paths(target, node))
+            if self.is_a_node(join_paths(target, node)):
+                self.do_unlink(join_paths(target, node))
         self.do_rmdir(target)
         self.do_link(source, target)
 
@@ -913,23 +912,21 @@ def run_with_args(argv = []):
 
     args, rest = parser.parse_known_args(argv)
 
+    # Consolidate args and set defaults so they
+    # can be passed cleanly to the Stow constructor
     if args.version:
         print("stow.py version " + version)
         return
     del args.version
 
-    if not args.dir:
-        try:
-            args.dir = os.environ["STOW_DIR"]
-        except KeyError:
-            args.dir = os.getcwd()
-    if not args.target:
-        args.target = join_paths(args.dir, os.pardir)
+    args.dir = args.dir or os.environ.get("STOW_DIR", os.getcwd())
+    args.target = args.target or join_paths(args.dir, os.pardir)
 
-    if not args.verbose:
-        args.verbose = args.v
+    args.verbose = args.verbose or args.v
     del args.v
 
+    # List which packages we plan to stow/unstow, keeping
+    # track of which mode we're in as set by the CLI args.
     pkgs_to_stow = []
     pkgs_to_unstow = []
     mode_stow, mode_unstow = (True, False)
@@ -961,5 +958,4 @@ def run_with_args(argv = []):
     stow.process_tasks()
 
 if __name__ == "__main__":
-    import sys
     run_with_args(sys.argv[1:])
